@@ -1,0 +1,45 @@
+#slider{
+    position: relative;
+    text-align: center;
+}
+
+#slider .slider__img{
+    width: 100%;
+    position: relative;
+}
+
+#slider .slider__img img{
+    width: 100%;
+}
+
+#slider .slider__img .slider__img-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    color: #000000;
+}
+
+#slider .slider__img .icon svg{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000000;
+    font-size: 48px;
+    line-height: 32px;
+    font-weight: bold;
+}
+
+.slider__img .icon.prev svg{
+    left: 20px;
+}
+
+.slider__img .icon.next svg{
+    right: 20px;
+}
+
+.icon:hover{
+    cursor: pointer;
+}
+

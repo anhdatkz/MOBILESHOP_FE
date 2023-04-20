@@ -1,0 +1,73 @@
+#nav{
+    margin-top: 66px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+
+#nav .nav__list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: 0 300px;
+    height: 48px;
+}
+
+#nav .nav__list .nav-item{
+    line-height: 48px;
+}
+
+.nav__list > li > a{
+    line-height: 48px;
+    padding: 0 30px;
+    display: block;
+    font-weight: bold;
+}
+
+.nav-item > a > svg{
+    /* transform: translateY(20%); */
+}
+
+.nav__list > li:hover > a{
+    cursor: pointer;
+    color: rgb(0, 68, 255);
+}
+
+#nav .nav-item .subnav{
+    list-style: none;
+    background-color: #fff;
+    display: none;
+    position: absolute;
+    z-index: 1;
+    width: 300px;
+}
+
+#nav li:hover .subnav{
+    display: block;
+}
+
+.subnav{
+    padding-left: 0;
+}
+
+.subnav > li{
+    padding: 5px 30px;
+    line-height: 20px;
+}
+
+.subnav > li:hover{
+    cursor: pointer;
+    background-color: #ccc;
+}
+
+.subnav > li > a{
+    display: block;
+}
+
+.subnav > li > a{
+    color: black;
+}
+
+a{
+    text-decoration: none;
+}

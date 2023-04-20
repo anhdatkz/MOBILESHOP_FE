@@ -1,0 +1,47 @@
+#footer{
+    margin: 50px 50px;
+}
+
+#footer .address{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+    width: 100%;
+}
+
+#footer .address__item{
+    flex-basis: 50%;
+    height: 100%;
+}
+
+.address .address__item .map{
+    width: 100%;
+    height: 100%;
+}
+
+.address__item .map img{
+    width: 100%;
+    height: 100%;
+}
+
+.address__item .info{
+    background-color: aqua;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.address__item .info .info__item{
+    padding: 10px 0;
+    text-align: center;
+}
+
+
+.info .info__item svg{
+    font-size: 24px;
+    color: crimson;
+    margin: 10px 0;
+}

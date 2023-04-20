@@ -1,0 +1,32 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.scroll-top{
+  position: fixed;
+  right: 10px;
+  bottom: 50px;
+}
+
+.scroll-top svg{
+  font-size: 32px;
+  color: green;
+}
+
+.scroll-top:hover{
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+span{
+  font-weight: bold;
+}
+
+label{
+  font-weight: 500;
+}

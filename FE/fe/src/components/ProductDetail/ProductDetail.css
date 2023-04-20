@@ -1,0 +1,174 @@
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.section-item{
+    margin-top: 50px;
+    width: 40%;
+}
+.section-image__main{
+    width: 500px;
+    height: 400px;
+    padding: 20px 0;
+    border: 1px solid orange;
+    border-radius: 15px;
+}
+
+.section-image__main img{
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
+
+.section-image__list{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+.section-image__list li{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-basis: 20%;
+}
+
+.section-image__list > li > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+}
+
+
+.section-detail__type{
+    color: #e27a41;
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+.section-detail__name{
+    font-size: 24px;
+    margin: 20px 0;
+    font-weight: 700;
+}
+
+.section-detail__description{
+    margin: 10px 0;
+}
+
+.section-detail__description p{
+    color: #888888;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.section-detail__price{
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.section-detail__price p{
+    line-height: 28px;
+}
+
+.section-detail__price .old-price{
+    text-decoration: line-through;
+    font-size: 12px;
+    color: #545454;
+}
+
+.section-detail__price .discount{
+    margin: 0 10px;
+    font-size: 12px;
+    color: #e27a41;
+    font-weight: bolder;
+}
+
+.section-detail__price-discount{
+    font-size: 24px;
+    font-weight: bolder;
+    color: #d70018;
+    margin-bottom: 20px;
+}
+
+.section-detail__add-cart{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-detail__add-cart .quantity{
+    /* display: flex; */
+}
+
+.btn-info{
+    width: 50px;
+    margin: 0 10px;
+}
+
+.quantity input{
+    width: 80px;
+    height: 32px;
+    margin: 0 10px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.quantity {
+    display: flex;
+    justify-content: space-around;
+}
+
+.add-to-cart {
+    width: 200px;
+    height: 40px;
+    background-color: #e45508;
+    color: #fff;
+    font-weight: 700;
+    line-height: 40px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+}
+
+.add-to-cart img{
+    margin: 0 5px;
+    transform: translateY(25%);
+}
+
+/* ĐÁNH GIÁ SẢN PHẨM */
+
+.rating-list{
+    margin: 20px 0px;
+    width: 50%;
+}
+
+.rating-item{
+    border: 1px solid #888888;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.user-rate{
+    color: #333;
+    font-weight: bolder;
+}
+
+.rating-star{
+    color: #ff7300
+}
+
+.date-rate{
+    font-size: 14px;
+    color: #777;
+}

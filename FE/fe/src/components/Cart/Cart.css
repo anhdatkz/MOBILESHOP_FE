@@ -1,0 +1,36 @@
+.cart{
+    margin-top: 66px;
+}
+
+.cart-empty{
+    text-align: center;
+    padding: 50px 0;
+}
+
+.cart-empty h5, .cart-empty button{
+    margin-top: 20px;
+}
+
+
+table td{
+    line-height: 66px;
+}
+
+table svg{
+    color: red;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.cart-item-img{
+    width: 100px;
+    height: 80px;
+}
+
+.btn-checkout{
+    width: 10%;
+    height: 3.5em;
+    padding: 15px;
+    float: right;
+    margin: 30px;
+}

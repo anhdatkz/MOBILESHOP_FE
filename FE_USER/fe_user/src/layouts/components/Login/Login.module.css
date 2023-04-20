@@ -1,0 +1,21 @@
+.container{
+    margin-top: 66px; 
+}
+
+.login-form{
+    width: 500px;
+    margin: auto;
+}
+.login-form input{
+    margin-top: 10px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.validate{
+    color: red;
+    font-weight: 500;
+    font-size: 12px;
+}

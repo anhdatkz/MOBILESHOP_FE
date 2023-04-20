@@ -1,0 +1,34 @@
+.sidebar{
+    position: fixed;
+    font-weight: bold;
+    width: 200px;
+    height: 100%;
+    border: 2px solid #00000020;
+}
+
+.sidebar li,
+.sidebar li > a{
+    display: block;
+    line-height: 40px;
+    padding: 0;
+}
+
+.sidebar li:hover{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.logout{
+    color: rgb(249, 88, 88);
+}
+
+.sidebar li > a{
+    padding-left: 20px;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+.active{
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #890096;
+}

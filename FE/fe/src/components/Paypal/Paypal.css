@@ -1,0 +1,37 @@
+.checkout{
+    padding: 0 50px;
+}
+
+.paypal{
+    margin-top: 50px;
+    /* height: 50px; */
+    width: 300px;
+    float: right;
+    /* text-align: center; */
+}
+
+.paypal > div{
+    text-align: end;
+}
+
+.customer{
+    margin-top: 66px;
+    padding-top: 30px;
+    font-size: 14px;
+}
+
+.customer-info{
+    display: flex;
+    gap: calc(10%/3);
+    justify-content: space-between;
+}
+
+.customer-info > div{
+    flex-basis: calc(90%/3);
+}
+
+.delivery-address{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

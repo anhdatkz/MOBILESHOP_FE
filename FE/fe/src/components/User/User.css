@@ -1,0 +1,106 @@
+
+.order,
+.user{
+    margin-top: 66px;
+    margin-left: 200px;
+    position: absolute;
+    /* position: sticky;
+    float: right; */
+    padding: 0 20px;
+    font-size: 14px;
+    width: calc(100% - 200px);
+}
+
+.user-title{
+    display: block;
+    padding-bottom: 20px;
+}
+
+.user-profile > form{
+    display: flex;
+    flex-direction: column;
+}
+
+.frofile-item > div{
+    display: flex;
+    padding: 10px
+}
+
+.frofile-item > div > label{
+    width: 20%;
+    color: rgb(85 85 85 / 80%);
+}
+
+.frofile-item > div > div{
+    width: 80%;
+}
+
+.frofile-item  div input{
+    padding: 5px;
+}
+
+.frofile-item > button{
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100px;
+}
+
+/* USER ORDER */
+
+.order th,.order td{
+    padding: 8px;
+}
+
+.order-table{
+    width: 100%;
+}
+
+.order-status{
+    font-weight: 500;
+    color: rgb(255, 128, 0);
+}
+
+.order-total{
+    font-weight: 700;
+}
+
+.btn-order{
+    margin-right: 20px
+}
+
+.action-status__item{
+    padding: 0 20px;
+    line-height: 46px;
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+}
+
+.action-status__item:hover{
+    cursor: pointer;
+}
+
+/* .active{
+    border-bottom: 2px solid #0d6efd;
+    background-color: rgba(112, 112, 112, 0.1);
+} */
+
+.to-ship{
+    font-weight: 700;
+    color: #ff7300;
+}
+
+.to-receive{
+    font-weight: 700;
+    color: #009407;;
+}
+
+.completed{
+    font-weight: 700;
+    color: #d70018;
+}
+
+.order-action{
+    display: flex;
+    align-items: center;
+}
