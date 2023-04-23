@@ -9,14 +9,17 @@ import { caculate, formatTien, VND } from '../../ultils/Format'
 function ContentItemSearch(props) {
     const { query } = useParams()
 
+    const [loading, setLoading] = useState(false);
     const [loaiSP, setLoaiSP] = useState([])
     const [cartItems, setCartItems] = useState([])
 
     useEffect(() => {
+        setLoading(true)
         fetch(`${apiConfig.baseUrl}/loaisanpham/query=${query}`)
             .then((res) => res.json())
             .then((data) => {
                 setLoaiSP(data)
+                setLoading(false)
                 console.log(data)
             })
     }, [query])
@@ -47,43 +50,52 @@ function ContentItemSearch(props) {
 
     return (
         <>
-            <div className='content__item'>
-                <div className='content__item-title'>Kết quả tìm kiếm cho "{query}"</div>
-                <div className='content__item-list'>
-                    <ul className='list-product'>
-                        {loaiSP.map((loaisp, index) => (
-                            <li className='product' key={index}>
-                                <Link to={`/detail-product/${loaisp.maloai}`}>
-                                    <div className='product__img'>
-                                        <img src={loaisp.anh} />
-                                    </div>
-                                    <div className='product__name'>{loaisp.tenloai}</div>
-                                    <div className='product__old-price'>
-                                        <div className="old-price">
-                                            {VND.format(loaisp.gia)}
-                                        </div>
-                                        <div className="percent">
-                                            {loaisp.ctGiamGiaLSP[0] ? `${loaisp.ctGiamGiaLSP[0].phantram} %` : ""}
-                                        </div>
-                                    </div>
-                                    <div className='product__new-price'>{loaisp.ctGiamGiaLSP[0]
-                                        ? VND.format(caculate(loaisp))
-                                        : VND.format(loaisp.gia)}
-                                    </div>
-                                    <ul className='product__star'>
-                                        <li><FaStar /></li>
-                                        <li><FaStar /></li>
-                                        <li><FaStar /></li>
-                                        <li><FaStar /></li>
-                                        <li><FaStar /></li>
-                                    </ul>
-                                </Link>
-                                {/* <button className='btn-add-cart btn btn-primary' onClick={() => handleClick(loaisp)}>Thêm vào giỏ hàng</button> */}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
+            {loading
+                ? (<div className="content__item">
+                    <div className="content__item-title">
+                        <div class="spinner-border text-primary"></div>
+                    </div>
+                </div>)
+                : (<>
+                    <div className='content__item'>
+                        <div className='content__item-title'>Kết quả tìm kiếm cho "{query}"</div>
+                        <div className='content__item-list'>
+                            <ul className='list-product'>
+                                {loaiSP.map((loaisp, index) => (
+                                    <li className='product' key={index}>
+                                        <Link to={`/detail-product/${loaisp.maloai}`}>
+                                            <div className='product__img'>
+                                                <img src={loaisp.anh} />
+                                            </div>
+                                            <div className='product__name'>{loaisp.tenloai}</div>
+                                            <div className='product__old-price'>
+                                                <div className="old-price">
+                                                    {VND.format(loaisp.gia)}
+                                                </div>
+                                                <div className="percent">
+                                                    {loaisp.ctGiamGiaLSP[0] ? `${loaisp.ctGiamGiaLSP[0].phantram} %` : ""}
+                                                </div>
+                                            </div>
+                                            <div className='product__new-price'>{loaisp.ctGiamGiaLSP[0]
+                                                ? VND.format(caculate(loaisp))
+                                                : VND.format(loaisp.gia)}
+                                            </div>
+                                            <ul className='product__star'>
+                                                <li><FaStar /></li>
+                                                <li><FaStar /></li>
+                                                <li><FaStar /></li>
+                                                <li><FaStar /></li>
+                                                <li><FaStar /></li>
+                                            </ul>
+                                        </Link>
+                                        {/* <button className='btn-add-cart btn btn-primary' onClick={() => handleClick(loaisp)}>Thêm vào giỏ hàng</button> */}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </>)
+            }
         </>
     )
 }

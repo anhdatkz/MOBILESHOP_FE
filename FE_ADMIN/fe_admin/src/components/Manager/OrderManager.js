@@ -30,8 +30,37 @@ function OrderManager() {
         console.log(modal)
     }
 
+    const handleOrderConfirm = (madh, matrangthai) => {
+        setAction("confirm")
+        const data = {
+            madh: madh,
+            matrangthai: matrangthai
+        }
+        fetch(`${apiConfig.baseUrl}/donhang`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                toast.success(data.message, {
+                    position: "top-center"
+                })
+                console.log('Success:', data);
+                setAction("")
+            })
+            .catch((error) => {
+                toast.error("Duyệt đơn thất bại!", {
+                    position: "top-center"
+                })
+                console.error('Error:', error);
+            });
+    }
+
     const handleDelivered = (madh) => {
-        setAction("delete")
+        setAction("suscess")
         fetch(`${apiConfig.baseUrl}/donhang`, {
             method: 'PUT',
             headers: {
@@ -73,8 +102,11 @@ function OrderManager() {
                         <div className={style["action-status"]}>
                             <div className={type === "" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("")}>Tất cả</div>
                             <div className={type === "1" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("1")}>Chờ duyệt</div>
+                            <div className={type === "6" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("6")}>Đã duyệt</div>
                             <div className={type === "2" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("2")}>Đang giao</div>
                             <div className={type === "3" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("3")}>Đã giao</div>
+                            <div className={type === "4" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("4")}>Đã hủy</div>
+                            <div className={type === "5" ? `${style["action-status__item"]} ${style["active"]}` : style["action-status__item"]} onClick={() => handleChangeStatus("5")}>Thất bại</div>
                         </div>
                     </div>
                     <table className="table">
@@ -100,17 +132,35 @@ function OrderManager() {
                                     <td>{orders.ngaylap}</td>
                                     <td className="order-total">{VND.format(orders.tongtien)} </td>
                                     <td className={orders.trangThai.matrangthai === 1
-                                        ? `${style["to-ship"]}`
-                                        : (orders.trangThai.matrangthai === 2 ? `${style["to-receive"]}` : style["completed"])}>{orders.trangThai.trangthai}</td>
+                                        ? `${style["pending"]}`
+                                        : (orders.trangThai.matrangthai === 2
+                                            ? `${style["to-receive"]}`
+                                            : (orders.trangThai.matrangthai === 3
+                                                ? `${style["completed"]}`
+                                                : (orders.trangThai.matrangthai === 4
+                                                    ? `${style["cancelled"]}`
+                                                    : (orders.trangThai.matrangthai === 5
+                                                        ? `${style["failled"]}`
+                                                        : style["confirmed"]))))}>{orders.trangThai.trangthai}</td>
                                     <td className={style["order-action"]}>
-                                        <button className="btn btn-primary btn-order" onClick={() => showModal(orders.madh, "")}>Chi tiết</button>
+                                        <button className="btn btn-primary" onClick={() => showModal(orders.madh, "")}>Chi tiết</button>
                                     </td>
                                     <td>
-                                        {(orders.trangThai.matrangthai === 1)
+                                        {(orders.trangThai.matrangthai === 6)
                                             ? (<div className={style["order-edit"]} onClick={() => showModal(orders.madh, "edit")}><FaEdit /></div>)
                                             : ((orders.trangThai.matrangthai === 2)
-                                                ? (<div className={style["order-edit"]} onClick={() => handleDelivered(orders.madh)}><FaEdit /></div>)
-                                                : <Fragment></Fragment>)
+                                                ? (<div className={style["action"]}>
+                                                    <div className={style["order-edit"]} onClick={() => handleOrderConfirm(orders.madh, 3)}><FaEdit /></div>
+                                                    <div className={style["order-delete"]} onClick={() => handleOrderConfirm(orders.madh, 5)}><FaTrashAlt /></div>
+                                                </div>)
+                                                : (orders.trangThai.matrangthai === 1)
+                                                    ? (
+                                                        <div className={style["action"]}>
+                                                            <div className={style["order-edit"]} onClick={() => handleOrderConfirm(orders.madh, 6)}><FaEdit /></div>
+                                                            <div className={style["order-delete"]} onClick={() => handleOrderConfirm(orders.madh, 4)}><FaTrashAlt /></div>
+                                                        </div>
+                                                    )
+                                                    : (<Fragment />))
                                         }
                                     </td>
                                 </tr>

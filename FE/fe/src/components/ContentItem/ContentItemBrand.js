@@ -9,6 +9,7 @@ import { caculate, formatTien, VND } from '../../ultils/Format'
 function ContentItemBrand(props) {
     const { id } = useParams()
 
+    const [loading, setLoading] = useState(false);
     const [loaiSP, setLoaiSP] = useState([])
     const [cartItems, setCartItems] = useState([])
     const [rams, setRams] = useState([])
@@ -127,6 +128,7 @@ function ContentItemBrand(props) {
     }
 
     useEffect(() => {
+        setLoading(true);
         fetchData()
             .then((data) => {
                 setFilter("")
@@ -138,10 +140,12 @@ function ContentItemBrand(props) {
                     item.giamoi = item.gia
                     return item
                 }))
+                setLoading(false);
                 console.log(data)
             })
             .catch((e) => {
                 console.log(e.message)
+                setLoading(false);
             })
 
         fetch(`${apiConfig.baseUrl}/ram`)
@@ -169,123 +173,133 @@ function ContentItemBrand(props) {
 
     return (
         <>
-            {loaiSP.length === 0 && filter === ""
+            {loading
                 ? (<div className="content__item">
                     <div className="content__item-title">
-                        Sản phẩm hãng {id} hiện tại chưa cập nhật!
+                        <div class="spinner-border text-primary"></div>
                     </div>
                 </div>)
-                : (
-                    <>
-                        <div className='content__item'>
-                            <div className='content__item-title'>{id === "all" ? "Tất cả sản phẩm" : id}</div>
-                            <div className='filter'>
-                                <button className='btn filter-item' onClick={() => handleFilterHighPrice(filter === "" ? loaiSP : lspFilter)}>Giá Cao - Thấp</button>
-                                <button className='btn filter-item' onClick={() => handleFilterLowPrice(filter === "" ? loaiSP : lspFilter)} >Giá Thấp - Cao</button>
-                                <select name="ram" id="ram" className="form-control filter-item" ref={ramRef} onChange={() => handleChangeRam(loaiSP, ramRef.current.value)}>
-                                    {rams.map((ram) => (
-                                        <option value={ram.maram} key={ram.maram}>{ram.dungluong.trim()}</option>
-                                    ))}
-                                </select>
-                                <select name="rom" id="rom" className="form-control filter-item" ref={romRef} onChange={() => handleChangeRom(loaiSP, romRef.current.value)}>
-                                    {roms.map((rom) => (
-                                        <option value={rom.marom} key={rom.marom}>{rom.dungluong.trim()}</option>
-                                    ))}
-                                </select>
-                                <select name="gias" id="gias" className="form-control filter-item" ref={giaRef} onChange={() => handleChangePrice(loaiSP, giaRef.current.value)}>
-                                    {gias.map((gia, index) => (
-                                        <option value={index} key={gia.gia}>{gia.mota.trim()}</option>
-                                    ))}
-                                </select>
+                : (<>
+                    {loaiSP.length === 0 && filter === ""
+                        ? (<div className="content__item">
+                            <div className="content__item-title">
+                                Sản phẩm hãng {id} hiện tại chưa cập nhật!
                             </div>
-                            {filter === ""
-                                ? (loaiSP.length === 0
-                                    ? (<div className="content__item">
-                                        <div className="content__item-title">
-                                            Không tìm thấy sản phẩm
-                                        </div>
-                                    </div>)
-                                    : (<div className='content__item-list'>
-                                        <ul className='list-product'>
-                                            {loaiSP.map((loaisp, index) => (
-                                                <li className='product' key={index}>
-                                                    <Link to={`/detail-product/${loaisp.maloai}`}>
-                                                        <div className='product__img'>
-                                                            <img src={loaisp.anh} />
-                                                        </div>
-                                                        <div className='product__name'>{loaisp.tenloai}</div>
-                                                        <div className='product__old-price'>
-                                                            {loaisp.ctGiamGiaLSP[0]
-                                                                ? (<Fragment>
-                                                                    <div className="old-price">
-                                                                        {VND.format(loaisp.gia)}
-                                                                    </div>
-                                                                    <div className="percent">
-                                                                        {loaisp.ctGiamGiaLSP[0] ? `${loaisp.ctGiamGiaLSP[0].phantram} %` : ""}
-                                                                    </div>
-                                                                </Fragment>)
-                                                                : (<Fragment />)}
-                                                        </div>
-                                                        <div className='product__new-price'>{VND.format(loaisp.giamoi)}
-                                                        </div>
-                                                        <ul className='product__star'>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                        </ul>
-                                                    </Link>
-                                                    {/* <button className='btn-add-cart btn btn-primary' onClick={() => handleClick(loaisp)}>Thêm vào giỏ hàng</button> */}
-                                                </li>
+                        </div>)
+                        : (
+                            <>
+                                <div className='content__item'>
+                                    <div className='content__item-title'>{id === "all" ? "Tất cả sản phẩm" : id}</div>
+                                    <div className='filter'>
+                                        <button className='btn filter-item' onClick={() => handleFilterHighPrice(filter === "" ? loaiSP : lspFilter)}>Giá Cao - Thấp</button>
+                                        <button className='btn filter-item' onClick={() => handleFilterLowPrice(filter === "" ? loaiSP : lspFilter)} >Giá Thấp - Cao</button>
+                                        <select name="ram" id="ram" className="form-control filter-item" ref={ramRef} onChange={() => handleChangeRam(loaiSP, ramRef.current.value)}>
+                                            {rams.map((ram) => (
+                                                <option value={ram.maram} key={ram.maram}>{ram.dungluong.trim()}</option>
                                             ))}
-                                        </ul>
-                                    </div>))
-                                : (lspFilter.length === 0
-                                    ? (<div className="content__item">
-                                        <div className="content__item-title">
-                                            Không tìm thấy sản phẩm
-                                        </div>
-                                    </div>)
-                                    : (<div className='content__item-list'>
-                                        <ul className='list-product'>
-                                            {lspFilter.map((lspFilter, index) => (
-                                                <li className='product' key={index}>
-                                                    <Link to={`/detail-product/${lspFilter.maloai}`}>
-                                                        <div className='product__img'>
-                                                            <img src={lspFilter.anh} />
-                                                        </div>
-                                                        <div className='product__name'>{lspFilter.tenloai}</div>
-                                                        <div className='product__old-price'>
-                                                            {lspFilter.ctGiamGiaLSP[0]
-                                                                ? (<Fragment>
-                                                                    <div className="old-price">
-                                                                        {VND.format(lspFilter.gia)}
-                                                                    </div>
-                                                                    <div className="percent">
-                                                                        {lspFilter.ctGiamGiaLSP[0] ? `${lspFilter.ctGiamGiaLSP[0].phantram} %` : ""}
-                                                                    </div>
-                                                                </Fragment>)
-                                                                : (<Fragment />)}
-                                                        </div>
-                                                        <div className='product__new-price'>{VND.format(lspFilter.giamoi)}
-                                                        </div>
-                                                        <ul className='product__star'>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                            <li><FaStar /></li>
-                                                        </ul>
-                                                    </Link>
-                                                    {/* <button className='btn-add-cart btn btn-primary' onClick={() => handleClick(loaisp)}>Thêm vào giỏ hàng</button> */}
-                                                </li>
+                                        </select>
+                                        <select name="rom" id="rom" className="form-control filter-item" ref={romRef} onChange={() => handleChangeRom(loaiSP, romRef.current.value)}>
+                                            {roms.map((rom) => (
+                                                <option value={rom.marom} key={rom.marom}>{rom.dungluong.trim()}</option>
                                             ))}
-                                        </ul>
-                                    </div>))}
-                        </div>
-                    </>
-                )}
+                                        </select>
+                                        <select name="gias" id="gias" className="form-control filter-item" ref={giaRef} onChange={() => handleChangePrice(loaiSP, giaRef.current.value)}>
+                                            {gias.map((gia, index) => (
+                                                <option value={index} key={gia.gia}>{gia.mota.trim()}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {filter === ""
+                                        ? (loaiSP.length === 0
+                                            ? (<div className="content__item">
+                                                <div className="content__item-title">
+                                                    Không tìm thấy sản phẩm
+                                                </div>
+                                            </div>)
+                                            : (<div className='content__item-list'>
+                                                <ul className='list-product'>
+                                                    {loaiSP.map((loaisp, index) => (
+                                                        <li className='product' key={index}>
+                                                            <Link to={`/detail-product/${loaisp.maloai}`}>
+                                                                <div className='product__img'>
+                                                                    <img src={loaisp.anh} />
+                                                                </div>
+                                                                <div className='product__name'>{loaisp.tenloai}</div>
+                                                                <div className='product__old-price'>
+                                                                    {loaisp.ctGiamGiaLSP[0]
+                                                                        ? (<Fragment>
+                                                                            <div className="old-price">
+                                                                                {VND.format(loaisp.gia)}
+                                                                            </div>
+                                                                            <div className="percent">
+                                                                                {loaisp.ctGiamGiaLSP[0] ? `${loaisp.ctGiamGiaLSP[0].phantram} %` : ""}
+                                                                            </div>
+                                                                        </Fragment>)
+                                                                        : (<Fragment />)}
+                                                                </div>
+                                                                <div className='product__new-price'>{VND.format(loaisp.giamoi)}
+                                                                </div>
+                                                                <ul className='product__star'>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                </ul>
+                                                            </Link>
+                                                            {/* <button className='btn-add-cart btn btn-primary' onClick={() => handleClick(loaisp)}>Thêm vào giỏ hàng</button> */}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>))
+                                        : (lspFilter.length === 0
+                                            ? (<div className="content__item">
+                                                <div className="content__item-title">
+                                                    Không tìm thấy sản phẩm
+                                                </div>
+                                            </div>)
+                                            : (<div className='content__item-list'>
+                                                <ul className='list-product'>
+                                                    {lspFilter.map((lspFilter, index) => (
+                                                        <li className='product' key={index}>
+                                                            <Link to={`/detail-product/${lspFilter.maloai}`}>
+                                                                <div className='product__img'>
+                                                                    <img src={lspFilter.anh} />
+                                                                </div>
+                                                                <div className='product__name'>{lspFilter.tenloai}</div>
+                                                                <div className='product__old-price'>
+                                                                    {lspFilter.ctGiamGiaLSP[0]
+                                                                        ? (<Fragment>
+                                                                            <div className="old-price">
+                                                                                {VND.format(lspFilter.gia)}
+                                                                            </div>
+                                                                            <div className="percent">
+                                                                                {lspFilter.ctGiamGiaLSP[0] ? `${lspFilter.ctGiamGiaLSP[0].phantram} %` : ""}
+                                                                            </div>
+                                                                        </Fragment>)
+                                                                        : (<Fragment />)}
+                                                                </div>
+                                                                <div className='product__new-price'>{VND.format(lspFilter.giamoi)}
+                                                                </div>
+                                                                <ul className='product__star'>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                    <li><FaStar /></li>
+                                                                </ul>
+                                                            </Link>
+                                                            {/* <button className='btn-add-cart btn btn-primary' onClick={() => handleClick(loaisp)}>Thêm vào giỏ hàng</button> */}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            ))}
+                                </div>
+                            </>
+                        )}
+                </>)}
+
         </>
     )
 }

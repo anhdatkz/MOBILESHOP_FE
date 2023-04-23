@@ -69,6 +69,10 @@
     color: rgb(33, 53, 236);
 }
 
+.ram-rom{
+    margin: 0 10px;
+}
+
 .product .product__old-price{
     margin: 5px 10px;
     font-size: 12px; 

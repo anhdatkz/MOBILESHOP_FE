@@ -53,7 +53,7 @@ function PayPal({ isCheckout }) {
         console.log("============")
 
         console.log(totalAmount)
-    }, [])
+    }, [dispatch])
 
     const handleSaveCart = async () => {
         const cartData = {
@@ -64,7 +64,8 @@ function PayPal({ isCheckout }) {
             eamilnguoinhan: emailRef.current.value,
             tongtien: localStorage.getItem("totalAmount"),
             matrangthai: 1,
-            cmnd: cmnd
+            cmnd: userInfo.cmnd
+            // cmnd: cmnd
         }
 
         console.log("************************")
@@ -144,44 +145,53 @@ function PayPal({ isCheckout }) {
         })
     }
 
-    useEffect(() => {
-        window.paypal
-            .Buttons({
-                createOrder: (data, actions, err) => {
-                    return actions.order.create({
-                        intent: "CAPTURE",
-                        purchase_units: [
-                            {
-                                description: "Cool looking table",
-                                amount: {
-                                    currency_code: "USD",
-                                    value: totalAmount,
-                                },
-                            },
-                        ],
-                    });
-                },
-                onApprove: async (data, actions) => {
-                    handleSaveCart()
-                    const order = await actions.order.capture();
-                    console.log(order);
-                    handleClearCart()
-                    dispatch(clearCart())
-                    navigate("/")
-                    toast.success("Đặt hàng thành công!", {
-                        position: "top-center"
-                    })
+    const handleSubmit = async () => {
+        handleSaveCart()
+        handleClearCart()
+        dispatch(clearCart())
+        navigate("/")
+        toast.success("Đặt hàng thành công!", {
+            position: "top-center"
+        })
+    }
 
-                },
-                onError: (err) => {
-                    console.log(err);
-                    toast.error("Đặt hàng thất bại!", {
-                        position: "top-center"
-                    })
-                },
-            })
-            .render(paypal.current);
-    }, [paypal, dispatch]);
+    // useEffect(() => {
+    //     window.paypal
+    //         .Buttons({
+    //             createOrder: (data, actions, err) => {
+    //                 return actions.order.create({
+    //                     intent: "CAPTURE",
+    //                     purchase_units: [
+    //                         {
+    //                             description: "Cool looking table",
+    //                             amount: {
+    //                                 currency_code: "USD",
+    //                                 value: totalAmount,
+    //                             },
+    //                         },
+    //                     ],
+    //                 });
+    //             },
+    //             onApprove: async (data, actions) => {
+    //                 handleSaveCart()
+    //                 const order = await actions.order.capture();
+    //                 console.log(order);
+    //                 handleClearCart()
+    //                 dispatch(clearCart())
+    //                 navigate("/")
+    //                 toast.success("Đặt hàng thành công!", {
+    //                     position: "top-center"
+    //                 })
+    //             },
+    //             onError: (err) => {
+    //                 console.log(err);
+    //                 toast.error("Đặt hàng thất bại!", {
+    //                     position: "top-center"
+    //                 })
+    //             },
+    //         })
+    //         .render(paypal.current);
+    // }, [paypal, dispatch]);
 
     return (
         <>
@@ -248,7 +258,8 @@ function PayPal({ isCheckout }) {
                     </div>
                 </div >
                 <div className="paypal">
-                    <div ref={paypal}></div>
+                    <button type="button" className="btn btn-primary" onClick={handleSubmit}>Xác nhận đặt hàng</button>
+                    {/* <div ref={paypal}></div> */}
                 </div>
             </div>
         </>

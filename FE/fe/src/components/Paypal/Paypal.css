@@ -8,6 +8,7 @@
     width: 300px;
     float: right;
     /* text-align: center; */
+    padding-bottom: 50px;
 }
 
 .paypal > div{

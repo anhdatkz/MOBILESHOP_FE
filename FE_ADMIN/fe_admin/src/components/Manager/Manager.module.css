@@ -118,25 +118,51 @@
     background-color: rgba(112, 112, 112, 0.1);
 }
 
-.to-ship{
+.pending{
     font-weight: 700;
     color: #ff7300;
 }
 
 .to-receive{
     font-weight: 700;
-    color: #009407;;
+    color: #009fbf;;
 }
 
 .completed{
     font-weight: 700;
-    color: #d70018;
+    color: #009407;
+}
+.cancelled{
+    font-weight: 700;
+    color: #f4291a;
 }
 
-.order-action{
-    /* display: inline-block; */
+.failled{
+    font-weight: 700;
+    color: #948a00;
+}
+
+.confirmed{
+    font-weight: 700;
+    color: #f5b000;
+}
+
+.action{
+    display: flex;
+    gap: 20px;
 }
 
 .order-edit{
     display: inline-block;
+    color: #f5b000;
+}
+
+.order-delete{
+    display: inline-block;
+    color: #f4291a;
+}
+
+.order-edit:hover,
+.order-delete:hover{
+    cursor: pointer;
 }

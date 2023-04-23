@@ -90,17 +90,66 @@
     color: #ff7300;
 }
 
+.pending{
+    font-weight: 700;
+    color: #ff7300;
+}
+
 .to-receive{
     font-weight: 700;
-    color: #009407;;
+    color: #009fbf;;
 }
 
 .completed{
     font-weight: 700;
-    color: #d70018;
+    color: #009407;
+}
+
+.cancelled{
+    font-weight: 700;
+    color: #f4291a;
+}
+
+.failled{
+    font-weight: 700;
+    color: #948a00;
+}
+
+.confirmed{
+    font-weight: 700;
+    color: #f5b000;
 }
 
 .order-action{
     display: flex;
     align-items: center;
+}
+
+.order-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-status{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+.action-status__item{
+    padding: 0 20px;
+    line-height: 46px;
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+}
+
+.action-status__item:hover{
+    cursor: pointer;
+}
+
+.active{
+    border-bottom: 2px solid #0d6efd;
+    background-color: rgba(112, 112, 112, 0.1);
 }
