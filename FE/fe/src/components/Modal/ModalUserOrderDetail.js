@@ -28,7 +28,7 @@ function ModalUserOrderDetail(props) {
     return (
         <>
             <div className="modal show fade" style={modalStyle}>
-                <div className="modal-dialog">
+                <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Chi tiết đơn hàng #{madh}</h5>
@@ -38,6 +38,8 @@ function ModalUserOrderDetail(props) {
                             <thead>
                                 <tr>
                                     <th>Tên sản phẩm</th>
+                                    <th>Ảnh</th>
+                                    <th>Giá</th>
                                     <th>Số lượng</th>
                                     <th>Tổng tiền</th>
                                     <th></th>
@@ -45,18 +47,22 @@ function ModalUserOrderDetail(props) {
                             </thead>
                             <tbody>
                                 {ctdh.map((order) => (
-                                    <tr key={order.id.maloaictdh}>
-                                        <td>{order.id.maloaictdh}</td>
+                                    <tr key={order.tenloai}>
+                                        <td>{order.tenloai}</td>
+                                        <td><img src={order.anh} alt="" className={style["order-item-img"]} /></td>
+                                        <td>{VND.format(order.gia)}</td>
                                         <td>{order.soluong}</td>
-                                        <td className="order-total">{VND.format(order.tonggia)}</td>
+                                        <td className="order-total">{VND.format(order.tong)}</td>
                                     </tr>
                                 ))}
 
                                 <tr>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td className="order-total">Tổng tiền</td>
                                     <td className="order-total">{VND.format(ctdh.reduce((a, b) => {
-                                        return a + b.tonggia
+                                        return a + b.tong
                                     }, 0))}</td>
                                 </tr>
                             </tbody>

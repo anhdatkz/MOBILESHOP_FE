@@ -28,7 +28,10 @@ function Navbar() {
                             </li>
                             {hangs.map((hang, index) => (
                                 <li className='subnav-item' key={index}>
-                                    <Link to={`/brand/${hang.mahang}`}>{hang.tenhang}</Link>
+                                    <Link to={`/brand/${hang.mahang}`}>
+                                        <img src={hang.anh} alt="" className='subnav-item-img' />
+                                        {/* {hang.tenhang} */}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>

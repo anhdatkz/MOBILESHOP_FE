@@ -68,7 +68,7 @@ export default function ModalEmployeeDelivery(props) {
 
 
     useEffect(() => {
-        fetch(`${apiConfig.baseUrl}/nhanvien`)
+        fetch(`${apiConfig.baseUrl}/nhanvien/phancong`)
             .then((res) => res.json())
             .then((data) => {
                 setNhanViens(data)
@@ -106,17 +106,19 @@ export default function ModalEmployeeDelivery(props) {
                                         <th>Họ tên</th>
                                         <th>SĐT</th>
                                         <th>Email</th>
+                                        <th>Số đơn</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {nhanviens.map((nv, index) => (
                                         <tr key={index}>
-                                            <td>{nv.manv}</td>
-                                            <td>{nv.hoten}</td>
-                                            <td>{nv.sdt}</td>
-                                            <td>{nv.email}</td>
-                                            <td><input type="radio" name="nhanvien" value={nv.manv} onChange={onOptionChange} /></td>
+                                            <td>{nv.nhanVien.manv}</td>
+                                            <td>{nv.nhanVien.hoten}</td>
+                                            <td>{nv.nhanVien.sdt}</td>
+                                            <td>{nv.nhanVien.email}</td>
+                                            <td>{nv.sodon}</td>
+                                            <td><input type="radio" name="nhanvien" value={nv.nhanVien.manv} onChange={onOptionChange} /></td>
                                         </tr>
                                     ))}
                                 </tbody>

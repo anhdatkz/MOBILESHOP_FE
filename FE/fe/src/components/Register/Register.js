@@ -70,18 +70,18 @@ function Register() {
                 .then((data) => {
                     console.log(data)
                     if (data.success === true) {
-                        const cartData = {
-                            khachHangGH: {
-                                cmnd: values.cmnd.trim()
-                            }
-                        }
-                        fetch(`${apiConfig.baseUrl}/giohang`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(cartData),
-                        })
+                        // const cartData = {
+                        //     khachHangGH: {
+                        //         cmnd: values.cmnd.trim()
+                        //     }
+                        // }
+                        // fetch(`${apiConfig.baseUrl}/giohang`, {
+                        //     method: 'POST',
+                        //     headers: {
+                        //         'Content-Type': 'application/json',
+                        //     },
+                        //     body: JSON.stringify(cartData),
+                        // })
 
                         toast.success("Tạo tài khoản thành công!", {
                             position: "top-center"

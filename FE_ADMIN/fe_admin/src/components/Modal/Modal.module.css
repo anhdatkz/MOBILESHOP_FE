@@ -26,3 +26,7 @@
 .modal-total{
     font-weight: bold;
 }
+.order-item-img {
+    width: 100px;
+    height: 80px;
+}
