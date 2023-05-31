@@ -11,7 +11,7 @@ import ScrollToTop from './scrollTop/ScrollToTop';
 import PrivateRouteAdmin from './ultils/PrivateRouteAdmin';
 import PrivateRouteUser from './ultils/PrivateRouteUser';
 import apiConfig from './api/apiConfigs';
-import { loginData } from './ultils/LoginData';
+// import { loginData } from './ultils/LoginData';
 import { useDispatch } from 'react-redux';
 import { getTotals, initializeCart } from './features/cartSlice';
 // import Navbar from './components/Navbar/Navbar';
@@ -33,7 +33,6 @@ export { scrollTop, username }
 function App() {
   const [showGoToTop, setShowGoToTop] = useState(false)
   const dispatch = useDispatch();
-  let role = localStorage.getItem("role")
 
   useEffect(() => {
     const handleScroll = () => {

@@ -7,10 +7,26 @@ import './User.css'
 function UserAccount() {
 
     const [userInfo, setUserInfo] = useState({})
-    const username = localStorage.getItem('username')
+    // const username = localStorage.getItem('username')
 
+    // useEffect(() => {
+    //     fetch(`${apiConfig.baseUrl}/khachhang/tk/${username}`, {
+    //         headers: {
+    //             'Authorization': localStorage.getItem("token")
+    //         },
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setUserInfo(data)
+    //             console.log(data)
+    //         })
+    // }, [])
     useEffect(() => {
-        fetch(`${apiConfig.baseUrl}/khachhang/tk/${username}`)
+        fetch(`${apiConfig.baseUrl}/khachhang/profile`, {
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 setUserInfo(data)
@@ -31,12 +47,6 @@ function UserAccount() {
                 </div>
                 <div className="user-profile">
                     <form action="">
-                        <div className="frofile-item">
-                            <div className="username">
-                                <label htmlFor="">Tên đăng nhập</label>
-                                <div>{username}</div>
-                            </div>
-                        </div>
                         <div className="frofile-item">
                             <div className="fullname">
                                 <label htmlFor="">Tên</label>

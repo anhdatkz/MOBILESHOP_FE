@@ -74,7 +74,7 @@ export default function ModalEmployeeDelivery(props) {
                 setNhanViens(data)
             })
 
-        fetch(`${apiConfig.baseUrl}/nhanvien/tk/${localStorage.getItem("username")}`)
+        fetch(`${apiConfig.baseUrl}/nhanvien/tk`)
             .then((response) => {
                 if (response.ok) {
                     return response.json()

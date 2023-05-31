@@ -8,7 +8,7 @@ import { addToCart, decreaseCartItem, getTotals, removeFromCart } from "../../fe
 import { toast } from "react-toastify"
 import { caculate, formatTien, VND } from "../../ultils/Format"
 import apiConfig from "../../api/apiConfigs"
-import { loginData } from "../../ultils/LoginData"
+// import { loginData } from "../../ultils/LoginData"
 import { current } from "@reduxjs/toolkit"
 
 

@@ -52,13 +52,13 @@ function Login() {
                 .then((data) => {
 
                     localStorage.setItem('isLogin', true)
-                    localStorage.setItem('username', data.name)
+                    // localStorage.setItem('username', data.name)
                     localStorage.setItem('role', data.authorities[0])
                     localStorage.setItem('token', data.token)
                     setAccounts(data)
 
                     if (data.authorities[0] === "ROLE_ADMIN") {
-                        fetch(`${apiConfigs.baseUrl}/nhanvien/tk/${data.name}`)
+                        fetch(`${apiConfigs.baseUrl}/nhanvien/tk`)
                             .then((response) => {
                                 if (response.ok) {
                                     return response.json()

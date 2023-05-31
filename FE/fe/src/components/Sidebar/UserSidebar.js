@@ -22,7 +22,7 @@ export default function UserSidebar(params) {
                 <ul className="list-group">
                     <li className="list-group-item"><NavLink to="/user/profile">Tài khoản của tôi</NavLink></li>
                     <li className="list-group-item"><NavLink to="/user/orders">Quản lý đơn hàng</NavLink></li>
-                    <li className="list-group-item"><NavLink to="/user/orders-history">Lịch sử mua hàng</NavLink></li>
+                    {/* <li className="list-group-item"><NavLink to="/user/orders-history">Lịch sử mua hàng</NavLink></li> */}
                     <li className="list-group-item"><NavLink to="/user/returns">Quản lý đổi trả</NavLink></li>
                     <li className="list-group-item"><NavLink to="/user/notifications">Thông báo</NavLink></li>
                     <li className="list-group-item" onClick={handleLogOut}><a className="logout">Đăng xuất</a></li>

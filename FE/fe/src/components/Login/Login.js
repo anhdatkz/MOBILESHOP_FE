@@ -61,13 +61,13 @@ function Login() {
                     localStorage.setItem('token', data.token)
                     setAccounts(data)
 
-                    fetch(`${apiConfig.baseUrl}/giohang/kh/${data.name}`)
+                    fetch(`${apiConfig.baseUrl}/giohang/kh`)
                         .then((res) => res.json())
                         .then((data) => {
                             localStorage.setItem('cartId', data.idgiohang)
                         })
 
-                    fetch(`${apiConfig.baseUrl}/ctgh/kh/${data.name}`)
+                    fetch(`${apiConfig.baseUrl}/ctgh/kh`)
                         .then((res) => res.json())
                         .then((data) => {
                             localStorage.setItem('cartItems', data)

@@ -13,7 +13,7 @@
 }
 
 .register-info-item{
-  flex-basis: calc((100% -20px) / 2);
+  flex-basis: 50%;
 }
 
 .info-item{
