@@ -10,13 +10,13 @@ import { addToCart } from '../../features/cartSlice'
 import { formatTien, caculate, VND } from '../../ultils/Format'
 
 function ContentItem(props) {
-    const { title } = props
+    const { title, url } = props
     // const dispatch = useDispatch()
 
     const [loading, setLoading] = useState(false);
     const [loaiSP, setLoaiSP] = useState([])
     const [cartItems, setCartItems] = useState([])
-    const url = (title === "Sản phẩm mới" ? "lspnew" : "loaisanpham")
+    // const url = (title === "Sản phẩm mới" ? "lspnew" : "loaisanpham")
 
     useEffect(() => {
         setLoading(true)
@@ -49,7 +49,9 @@ function ContentItem(props) {
                                 <li className='product' key={index}>
                                     {title === "Sản phẩm mới"
                                         ? (<span className="product-new">New</span>)
-                                        : <></>
+                                        : (title === "Khuyến mãi"
+                                            ? (<span className="product-sale">Sale</span>)
+                                            : <span className="product-bestseller">Best Seller</span>)
                                     }
                                     <Link to={`/detail-product/${loaisp.maloai}`} onClick={scrollTop}>
                                         <div className='product__img'>

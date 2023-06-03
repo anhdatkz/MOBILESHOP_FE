@@ -35,7 +35,31 @@
 .product-new{
     position: absolute;
     padding: 2px 6px;
-    background-color: rgb(217, 76, 76);
+    background-color: red;
+        font-size: 14px;
+        line-height: 20px;
+        color: white;
+        border-radius: 10px;
+        top: -10px;
+        right: -10px;
+    }
+    
+    .product-sale {
+        position: absolute;
+        padding: 2px 6px;
+        background-color: #ff7300;
+        font-size: 14px;
+        line-height: 20px;
+        color: white;
+        border-radius: 10px;
+        top: -10px;
+        right: -10px;
+    }
+    
+    .product-bestseller {
+        position: absolute;
+        padding: 2px 6px;
+        background-color: #2dab00;
     font-size: 14px;
     line-height: 20px;
     color: white;
