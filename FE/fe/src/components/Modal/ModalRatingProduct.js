@@ -60,7 +60,11 @@ function ModalRatingProduct(props) {
     }
 
     useEffect(() => {
-        fetch(`${apiConfigs.baseUrl}/khachhang/tk/${username}`)
+        fetch(`${apiConfigs.baseUrl}/khachhang/profile`, {
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 setUserInfo(data)

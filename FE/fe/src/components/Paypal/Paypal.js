@@ -32,7 +32,11 @@ function PayPal({ isCheckout }) {
     today = yyyy + '-' + mm + '-' + dd;
 
     useEffect(() => {
-        fetch(`${apiConfig.baseUrl}/khachhang/tk/${username}`)
+        fetch(`${apiConfig.baseUrl}/khachhang/profile`, {
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 setUserInfo(data)
@@ -200,29 +204,29 @@ function PayPal({ isCheckout }) {
                     <div className="customer-info">
                         <div className="delivery-address">
                             <h4>Địa chỉ nhận hàng</h4>
-                            <input type="text" className="form-control" defaultValue={userInfo.tenkh} ref={tenkhRef} />
-                            <input type="text" className="address form-control" defaultValue={userInfo.diachi} ref={diachiRef} />
-                            <input type="text" className="phone form-control" defaultValue={userInfo.sdt} ref={sdtRef} />
-                            <input type="email" className="email form-control" defaultValue={userInfo.email} ref={emailRef} />
+                            <span>Họ tên</span><input type="text" className="form-control" defaultValue={userInfo.tenkh} ref={tenkhRef} />
+                            <span>Địa chỉ</span><input type="text" className="address form-control" defaultValue={userInfo.diachi} ref={diachiRef} />
+                            <span>Số điện thoại</span><input type="text" className="phone form-control" defaultValue={userInfo.sdt} ref={sdtRef} />
+                            <span>Email</span><input type="email" className="email form-control" defaultValue={userInfo.email} ref={emailRef} />
                         </div>
                         <div className="delivery-mode">
                             <h4>Hình thức giao hàng</h4>
-                            <div>Giao Tiết Kiệm</div>
-                            <div>Miễn phí vận chuyển</div>
+                            <div><span>Giao hàng Tiết Kiệm</span></div>
+                            <div><span>Miễn phí vận chuyển</span></div>
                         </div>
                         <div className="delivery-mode">
                             <h4>Hình thức thanh toán</h4>
-                            <div>Thanh toán qua Paypal</div>
+                            <div><span>Thanh toán khi nhận hàng</span></div>
                         </div>
                     </div>
                 </div>
                 <div className="cart">
-                    <h5>Chi tiết giỏ hàng</h5>
+                    <h5>Chi tiết đơn hàng</h5>
                     <div className="col-md-12">
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th>Tên</th>
+                                    <th>Tên sản phẩm</th>
                                     <th>Ảnh</th>
                                     <th>Giá</th>
                                     <th>Số lượng</th>

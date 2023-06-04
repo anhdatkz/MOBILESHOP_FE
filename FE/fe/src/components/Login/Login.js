@@ -61,7 +61,11 @@ function Login() {
                     localStorage.setItem('token', data.token)
                     setAccounts(data)
 
-                    fetch(`${apiConfig.baseUrl}/giohang/kh`)
+                    fetch(`${apiConfig.baseUrl}/giohang/kh`, {
+                        headers: {
+                            'Authorization': localStorage.getItem("token")
+                        },
+                    })
                         .then((res) => res.json())
                         .then((data) => {
                             localStorage.setItem('cartId', data.idgiohang)

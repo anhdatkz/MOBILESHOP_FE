@@ -30,18 +30,14 @@ function OrderManager() {
         console.log(modal)
     }
 
-    const handleOrderConfirm = (madh, matrangthai) => {
+    const updateStatus = (dataIn) => {
         setAction("confirm")
-        const data = {
-            madh: madh,
-            matrangthai: matrangthai
-        }
         fetch(`${apiConfig.baseUrl}/donhang`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(dataIn)
         })
             .then((response) => response.json())
             .then((data) => {
@@ -58,6 +54,66 @@ function OrderManager() {
                 console.error('Error:', error);
             });
     }
+
+    const handleOrderConfirm = (madh, matrangthai) => {
+        const data = {
+            madh: madh,
+            matrangthai: matrangthai
+        }
+        if (matrangthai === 3) {
+            let conf = window.confirm("Xác nhận đơn hàng đã giao!")
+            if (conf === true) {
+                updateStatus(data)
+            }
+        }
+        if (matrangthai === 4) {
+            let conf = window.confirm("Xác nhận hủy đơn hàng!")
+            if (conf === true) {
+                updateStatus(data)
+            }
+        }
+        if (matrangthai === 5) {
+            let conf = window.confirm("Xác nhận giao hàng thất bại!")
+            if (conf === true) {
+                updateStatus(data)
+            }
+        }
+        if (matrangthai === 6) {
+            let conf = window.confirm("Xác nhận duyệt đơn hàng!")
+            if (conf === true) {
+                updateStatus(data)
+            }
+        }
+    }
+
+    // const handleOrderConfirm = (madh, matrangthai) => {
+    //     setAction("confirm")
+    //     const data = {
+    //         madh: madh,
+    //         matrangthai: matrangthai
+    //     }
+    //     fetch(`${apiConfig.baseUrl}/donhang`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(data)
+    //     })
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             toast.success(data.message, {
+    //                 position: "top-center"
+    //             })
+    //             console.log('Success:', data);
+    //             setAction("")
+    //         })
+    //         .catch((error) => {
+    //             toast.error("Duyệt đơn thất bại!", {
+    //                 position: "top-center"
+    //             })
+    //             console.error('Error:', error);
+    //         });
+    // }
 
     const handleDelivered = (madh) => {
         setAction("suscess")

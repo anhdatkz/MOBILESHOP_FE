@@ -37,6 +37,8 @@ function Register() {
             diachi: Yup.string()
                 .required("Địa chỉ không được rỗng!"),
             sdt: Yup.string()
+                .min(10, "Số điện thoại phải là 10 số")
+                .max(10, "Số điện thoại phải là 10 số")
                 .required("Số điện thoại không được rỗng!").matches(phoneRegExp, "Số điện thoại không đúng"),
             email: Yup.string().email("Email không đúng định dạng!")
                 .required("Email không được rỗng!"),
@@ -115,7 +117,7 @@ function Register() {
                             <input type="text" className="form-control" name='matk'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                placeholder="Tên đăng nhập" />
+                                placeholder="Viết liền không dấu" />
                             {formik.touched.matk && formik.errors.matk ? (
                                 <div className={style["validate"]}>{formik.errors.matk}</div>
                             ) : null}

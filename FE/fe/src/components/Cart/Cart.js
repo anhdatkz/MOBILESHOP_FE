@@ -115,7 +115,11 @@ function Cart(props) {
     }
 
     const fetchData = async () => {
-        const response = await fetch(`${apiConfig.baseUrl}/ctgh/kh/${localStorage.getItem("username")}`)
+        const response = await fetch(`${apiConfig.baseUrl}/ctgh/kh`, {
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+        })
         if (!response.ok) {
             throw new Error('Data coud not be fetched!')
         } else {

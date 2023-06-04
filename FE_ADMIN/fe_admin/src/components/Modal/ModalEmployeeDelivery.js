@@ -74,7 +74,11 @@ export default function ModalEmployeeDelivery(props) {
                 setNhanViens(data)
             })
 
-        fetch(`${apiConfig.baseUrl}/nhanvien/tk`)
+        fetch(`${apiConfig.baseUrl}/nhanvien/profile`, {
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json()

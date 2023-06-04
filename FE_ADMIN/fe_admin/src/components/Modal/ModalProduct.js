@@ -69,7 +69,11 @@ function ModalProduct(props) {
 
     //lấy thông tin nhân viên đăng nhập
     useEffect(() => {
-        fetch(`${apiConfig.baseUrl}/nhanvien/tk/${username}`)
+        fetch(`${apiConfig.baseUrl}/nhanvien/profile`, {
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 setEmployee(data)
