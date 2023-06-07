@@ -1,10 +1,10 @@
 import './Header.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.jpg'
-import { FaShoppingCart, FaBell, FaUserCog, FaSearch } from "react-icons/fa"
+import { FaShoppingCart, FaBell, FaUserCog, FaSearch, FaSignInAlt } from "react-icons/fa"
 import { scrollTop } from '../../App'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import apiConfig from '../../api/apiConfigs'
 import { getTotals } from '../../features/cartSlice'
@@ -25,9 +25,10 @@ function Header() {
     const handleLogin = () => {
 
         if (islogin === "true") {
-            role === "ROLE_USER" ? navigate("/user/profile") : toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {
-                position: "top-center"
-            })
+            // role === "ROLE_USER" ? navigate("/user/profile") : toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {
+            //     position: "top-center"
+            // })
+            navigate("/user/profile")
         } else {
             navigate("/login")
         }
@@ -94,7 +95,7 @@ function Header() {
                         <FaBell></FaBell>
                     </div>
                     <div className='item login' onClick={handleLogin}>
-                        <FaUserCog></FaUserCog>
+                        {islogin === "true" ? (<FaUserCog></FaUserCog>) : (<Fragment><FaSignInAlt></FaSignInAlt> <span>Login</span></Fragment>)}
                     </div>
                 </div>
             </header>

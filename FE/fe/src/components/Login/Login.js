@@ -10,12 +10,20 @@ import apiConfig from '../../api/apiConfigs';
 import { loginData } from '../../ultils/LoginData';
 import { useDispatch } from 'react-redux';
 import { getCartItem } from '../../features/cartSlice';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 
 function Login() {
     const [username, setUserName] = useState("")
     const [password, setPassWord] = useState("")
     const [accounts, setAccounts] = useState([])
+    const [showPassword, setShowPassword] = useState(false);
+
+    const usernameRegex = /^[a-zA-Z0-9]+$/
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     let navigate = useNavigate()
     const dispatch = useDispatch()
@@ -28,10 +36,10 @@ function Login() {
         validationSchema: Yup.object({
             username: Yup.string()
                 .max(20, "Tên đăng nhập phải có ít hơn 20 ký tự")
-                .required("Tên đăng nhập không được rỗng!"),
+                .required("Tên đăng nhập không được rỗng!").matches(usernameRegex, "Username viết liền không dấu"),
             password: Yup.string()
                 .max(20, "Mật khẩu phải có ít hơn 20 ký tự")
-                .required("Mật khẩu không được rỗng!"),
+                .required("Mật khẩu không được rỗng!").matches(usernameRegex, "Mật khẩu viết liền không dấu"),
         }),
         onSubmit: (values) => {
             localStorage.setItem('isLogin', false)
@@ -56,14 +64,14 @@ function Login() {
                 .then((data) => {
 
                     localStorage.setItem('isLogin', true)
-                    localStorage.setItem('username', data.name)
-                    localStorage.setItem('role', data.authorities[0])
+                    // localStorage.setItem('username', data.name)
+                    // localStorage.setItem('role', data.authorities[0])
                     localStorage.setItem('token', data.token)
                     setAccounts(data)
 
                     fetch(`${apiConfig.baseUrl}/giohang/kh`, {
                         headers: {
-                            'Authorization': localStorage.getItem("token")
+                            'Authorization': data.token
                         },
                     })
                         .then((res) => res.json())
@@ -133,17 +141,20 @@ function Login() {
 
                     <div className="mb-3">
                         <label>Mật khẩu</label>
-                        <input
-                            type="password"
-                            id='password'
-                            name='password'
-                            className="form-control"
-                            placeholder="Mật khẩu"
-                            value={formik.values.password}
-                            // onChange={e => setPassWord(e.target.value.trim())}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
+                        <div className={style["input-password"]}>
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id='password'
+                                name='password'
+                                className="form-control"
+                                placeholder="Mật khẩu"
+                                value={formik.values.password}
+                                // onChange={e => setPassWord(e.target.value.trim())}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {showPassword ? (<FaEyeSlash onClick={toggleShowPassword}></FaEyeSlash>) : (<FaEye onClick={toggleShowPassword}></FaEye>)}
+                        </div>
                         {formik.touched.password && formik.errors.password ? (
                             <div className={style["validate"]}>{formik.errors.password}</div>
                         ) : null}

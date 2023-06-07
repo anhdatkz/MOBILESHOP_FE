@@ -110,7 +110,7 @@ export default function ModalEmployeeDelivery(props) {
                                         <th>Họ tên</th>
                                         <th>SĐT</th>
                                         <th>Email</th>
-                                        <th>Số đơn</th>
+                                        <th>Số đơn đang giao</th>
                                         <th></th>
                                     </tr>
                                 </thead>

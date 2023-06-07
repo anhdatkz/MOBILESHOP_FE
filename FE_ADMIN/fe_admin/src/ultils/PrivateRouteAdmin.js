@@ -6,7 +6,8 @@ const  PrivateRouteAdmin = ()=>{
     let role = localStorage.getItem("role")
     console.log("isLogin : " + isLogin)
     return(
-        (isLogin ==="true" && role === "ROLE_ADMIN") ? <Outlet/> : <Navigate to="/login"/>
+        // (isLogin ==="true" && role === "ROLE_ADMIN") ? <Outlet/> : <Navigate to="/login"/>
+        (isLogin === "true") ? <Outlet /> : <Navigate to="/login" />
     )
 }
 

@@ -94,7 +94,7 @@ function UserOrder() {
                     console.log('Success:', data);
                 })
                 .catch((error) => {
-                    toast.error("Duyệt đơn thất bại!", {
+                    toast.error("Hủy đơn thất bại!", {
                         position: "top-center"
                     })
                     console.error('Error:', error);

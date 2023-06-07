@@ -5,11 +5,18 @@ import apiConfig from '../../api/apiConfigs';
 import style from './Register.module.css'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Register() {
     const [accountData, setAccountData] = useState({})
     let navigate = useNavigate()
     const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
+    const usernameRegex = /^[a-zA-Z0-9]+$/
+    const [showPassword, setShowPassword] = useState(false);
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -25,10 +32,10 @@ function Register() {
         validationSchema: Yup.object({
             matk: Yup.string()
                 .max(20, "Tên đăng nhập không quá 20 ký tự")
-                .required("Tên đăng nhập không được rỗng!"),
+                .required("Tên đăng nhập không được rỗng!").matches(usernameRegex, "Username viết liền không dấu"),
             password: Yup.string()
                 .max(20, "Mật khẩu phải có ít hơn 20 ký tự")
-                .required("Mật khẩu không được rỗng!"),
+                .required("Mật khẩu không được rỗng!").matches(usernameRegex, "Mật khẩu viết liền không dấu"),
             cmnd: Yup.string()
                 .max(10, "CMND phải có ít hơn 10 ký tự")
                 .required("CMND không được rỗng!"),
@@ -117,7 +124,7 @@ function Register() {
                             <input type="text" className="form-control" name='matk'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                placeholder="Viết liền không dấu" />
+                                placeholder="Tên đăng nhập" />
                             {formik.touched.matk && formik.errors.matk ? (
                                 <div className={style["validate"]}>{formik.errors.matk}</div>
                             ) : null}
@@ -159,11 +166,17 @@ function Register() {
                     <div className={style["register-info-item"]}>
                         <div className={style["info-item"]}>
                             <label>Mật khẩu</label>
-                            <input
-                                type="password" className="form-control" name='password' onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                placeholder="Mật khẩu"
-                            />
+                            <div className={style["input-password"]}>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className="form-control"
+                                    name='password'
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    placeholder="Mật khẩu"
+                                />
+                                {showPassword ? (<FaEyeSlash onClick={toggleShowPassword}></FaEyeSlash>) : (<FaEye onClick={toggleShowPassword}></FaEye>)}
+                            </div>
                             {formik.touched.password && formik.errors.password ? (
                                 <div className={style["validate"]}>{formik.errors.password}</div>
                             ) : null}

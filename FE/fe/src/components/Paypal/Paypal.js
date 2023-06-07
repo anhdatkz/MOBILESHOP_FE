@@ -240,7 +240,7 @@ function PayPal({ isCheckout }) {
                                         <tr key={index}>
                                             <td>{item.tenloai}</td>
                                             <td><img src={item.anh} alt="" className="cart-item-img" /></td>
-                                            <td>{VND.format(item.gia)}</td>
+                                            <td>{item.giamgia.length == 0 ? (VND.format(item.gia)) : (VND.format(item.gia - item.gia * item.giamgia[0].phantram / 100))}</td>
                                             <td>
                                                 <span className="btn btn-info"> {item.cartQuantity} </span>
                                             </td>

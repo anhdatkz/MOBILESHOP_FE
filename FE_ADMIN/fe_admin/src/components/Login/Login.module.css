@@ -20,3 +20,13 @@
     font-weight: 500;
     font-size: 12px;
 }
+.input-password {
+    position: relative;
+}
+
+.input-password svg {
+    position: absolute;
+    right: -50px;
+    transform: translateY(-150%);
+    cursor: pointer;
+}

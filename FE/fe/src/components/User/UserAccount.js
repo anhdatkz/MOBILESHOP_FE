@@ -34,9 +34,9 @@ function UserAccount() {
             })
     }, [])
 
-    const handleChangeName = () => {
+    // const handleChangeName = () => {
 
-    }
+    // }
     console.log(userInfo)
 
     return (
@@ -46,12 +46,13 @@ function UserAccount() {
                     <h2>Hồ sơ của tôi</h2>
                 </div>
                 <div className="user-profile">
-                    <form action="">
+                    <form>
                         <div className="frofile-item">
                             <div className="fullname">
                                 <label htmlFor="">Tên</label>
                                 <div>
-                                    <input type="text" defaultValue={userInfo.tenkh} onChange={handleChangeName} />
+                                    {/* <input type="text" defaultValue={userInfo.tenkh} onChange={handleChangeName} /> */}
+                                    <input type="text" defaultValue={userInfo.tenkh} />
                                 </div>
                             </div>
                         </div>

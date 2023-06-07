@@ -60,26 +60,26 @@ function OrderManager() {
             madh: madh,
             matrangthai: matrangthai
         }
-        if (matrangthai === 3) {
-            let conf = window.confirm("Xác nhận đơn hàng đã giao!")
+        if (matrangthai === 3) { 
+            let conf = window.confirm(`Xác nhận đơn hàng ${madh} đã giao!`)
             if (conf === true) {
                 updateStatus(data)
             }
         }
         if (matrangthai === 4) {
-            let conf = window.confirm("Xác nhận hủy đơn hàng!")
+            let conf = window.confirm(`Xác nhận hủy đơn hàng ${madh}!`)
             if (conf === true) {
                 updateStatus(data)
             }
         }
         if (matrangthai === 5) {
-            let conf = window.confirm("Xác nhận giao hàng thất bại!")
+            let conf = window.confirm(`Xác nhận đơn hàng ${madh} giao hàng thất bại!`)
             if (conf === true) {
                 updateStatus(data)
             }
         }
         if (matrangthai === 6) {
-            let conf = window.confirm("Xác nhận duyệt đơn hàng!")
+            let conf = window.confirm(`Xác nhận duyệt đơn hàng ${madh}!`)
             if (conf === true) {
                 updateStatus(data)
             }

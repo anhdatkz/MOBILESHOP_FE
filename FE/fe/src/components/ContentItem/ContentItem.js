@@ -37,7 +37,7 @@ function ContentItem(props) {
         <>{loading
             ? (<div className="content__item">
                 <div className="content__item-title">
-                    <div class="spinner-border text-primary"></div>
+                    <div className="spinner-border text-primary"></div>
                 </div>
             </div>)
             : (<>

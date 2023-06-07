@@ -1,5 +1,5 @@
 const apiConfigs = {
-    baseUrl: 'http://localhost:8081/api/v1'
+    baseUrl: 'http://localhost:8083/api/v1'
 }
 
 
