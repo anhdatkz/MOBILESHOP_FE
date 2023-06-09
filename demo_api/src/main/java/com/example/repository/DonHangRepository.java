@@ -17,6 +17,12 @@ public interface DonHangRepository extends JpaRepository<DonHang, Integer>{
 	@Query("select dh from DonHang dh where dh.khachHang.taiKhoanKH.matk= :matk")
 	public List<DonHang> getAllDonHangByMaKH(@Param("matk") String cmnd);
 	
+	@Query("select dh from DonHang dh where dh.nhanVienGiao.manv = :manvgiao")
+	public List<DonHang> getDonHangByMaNVG(@Param("manvgiao") String manvgiao);
+	
+	@Query("select dh from DonHang dh where dh.nhanVienGiao.manv = :manvgiao AND dh.trangThai.matrangthai=2")
+	public List<DonHang> getDonHangByMaNVGPT(@Param("manvgiao") String manvgiao);
+	
 	@Query("select dh from DonHang dh where dh.trangThai.matrangthai = :matrangthai")
 	public List<DonHang> getDonHangByTrangThai(@Param("matrangthai") Integer matrangthai);
 	

@@ -1,9 +1,20 @@
 package com.example.controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,8 +26,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.entities.CTDH;
+import com.example.entities.DonHang;
 import com.example.entities.Hang;
 import com.example.entities.LoaiSanPham;
 import com.example.entities.Ram;
@@ -24,6 +38,9 @@ import com.example.entities.Rom;
 import com.example.payload.ApiResponse;
 import com.example.payload.LoaiSanPhamRequest;
 import com.example.payload.LoaiSanPhamResponse;
+import com.example.repository.LoaiSanPhamRepository;
+import com.example.service.CTDHService;
+import com.example.service.DonHangService;
 import com.example.service.HangService;
 import com.example.service.LoaiSanPhamService;
 import com.example.service.RamService;
@@ -37,6 +54,9 @@ public class LoaiSanPhamController {
 	private LoaiSanPhamService loaiSanPhamService;
 	
 	@Autowired
+	private LoaiSanPhamRepository loaiSanPhamRepository;
+	
+	@Autowired
 	private HangService hangService;
 	
 	@Autowired
@@ -45,9 +65,30 @@ public class LoaiSanPhamController {
 	@Autowired
 	private RomService romService;
 	
+	@Autowired
+	private CTDHService ctdhService;
+	
+	@Autowired
+	private DonHangService donHangService;
+	
+//	@GetMapping("/loaisanpham")
+//	public List<LoaiSanPham> getAllLoaiSanPham(){
+//		return this.loaiSanPhamService.get8LSP();
+//	}
+	
 	@GetMapping("/loaisanpham")
-	public List<LoaiSanPham> getAllLoaiSanPham(){
+	public List<LoaiSanPham> getAllLoaiSanPham(
+			@RequestParam(value = "ram", required = false) Integer ram,
+			@RequestParam(value = "rom", required = false) Integer rom,
+			@RequestParam(value = "hang", required = false) Integer hang){
 		return this.loaiSanPhamService.get8LSP();
+	}
+	
+	@GetMapping("lsp/pageable")
+	public Page<LoaiSanPham> testPage(@Param(value = "page") int page, @Param(value = "size") int size){
+		Pageable requestedPage = PageRequest.of(page, size);
+		Page<LoaiSanPham> products = loaiSanPhamRepository.findAll(requestedPage);
+		return products;
 	}
 	
 	@GetMapping("/lspnew")
@@ -57,7 +98,75 @@ public class LoaiSanPhamController {
 	
 	@GetMapping("/lspkm")
 	public List<LoaiSanPham> getAllLoaiSanPhamKM(){
-		return this.loaiSanPhamService.getLSPKM();
+		List<LoaiSanPham> alllsp = loaiSanPhamService.listAll();
+		List<LoaiSanPham> lspKM = new ArrayList<LoaiSanPham>();
+		
+		for(LoaiSanPham lsp : alllsp){
+			if(lsp.getCtGiamGiaLSP().size() > 0) {
+				lspKM.add(lsp);
+			}
+		}
+		if(lspKM.size() > 8) return lspKM.subList(0, 8);
+		else return lspKM;
+	}
+	
+	@GetMapping("/lspbestseller")
+	public List<LoaiSanPham> getAllLoaiSanPhamBestSale(){
+		List<CTDH> ctdhs = ctdhService.listAll();
+		List<LoaiSanPham> alllsp = loaiSanPhamService.listAll();
+		List<LoaiSanPham> lspBestSale = new ArrayList<LoaiSanPham>();
+		Map<String , Integer> mapLSP = new HashMap<>();
+		LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for(LoaiSanPham lsp : alllsp){
+			Integer soluong = 0;
+			for(CTDH ctdh : ctdhs){
+				DonHang donHang = donHangService.getDonHangById(ctdh.getId().getMadhctdh());
+				if(donHang.getTrangThai().getMatrangthai().equals(3)){
+					System.out.println("============================================"+donHang.getMadh());
+					if(ctdh.getId().getMaloaictdh().equals(lsp.getMaloai())){
+						soluong++;
+					}
+				}
+			}
+			mapLSP.put(lsp.getMaloai(), soluong);
+		}
+        
+//		for(LoaiSanPham lsp : alllsp){
+//			Integer soluong = 0;
+//			for(CTDH ctdh : ctdhs){
+//				if(ctdh.getId().getMaloaictdh().equals(lsp.getMaloai())){
+//					soluong++;
+//				}
+//			}
+//			mapLSP.put(lsp.getMaloai(), soluong);
+//		}
+        
+		for (Map.Entry<String, Integer> entry : mapLSP.entrySet()) {
+            list.add(entry.getValue());
+        }
+		
+		Collections.sort(list);
+        Collections.reverse(list);
+        for (int num : list) {
+            for (Entry<String, Integer> entry : mapLSP.entrySet()) {
+                if (entry.getValue().equals(num)) {
+                    sortedMap.put(entry.getKey(), num);
+                }
+            }
+        }
+		
+		Set<String> setLSP = sortedMap.keySet();
+        for (String key : setLSP) {
+        	if(mapLSP.get(key) > 0){
+        		lspBestSale.add(loaiSanPhamService.getLoaiSanPhamById(key.trim()));
+        		System.out.println(key + " : " + mapLSP.get(key));
+        	}
+//        	System.out.println(key + " : " + mapLSP.get(key));
+        }
+        if(lspBestSale.size() > 8) return lspBestSale.subList(0, 7);
+		else return lspBestSale;
 	}
 	
 	@GetMapping("/lsp")
@@ -74,6 +183,16 @@ public class LoaiSanPhamController {
 	public List<LoaiSanPham> findLoaiSanPhamByname(@PathVariable String name){
 		return this.loaiSanPhamService.findLoaiSanPhamByName(name);
 	}
+	
+//	@GetMapping("/filterlsp")
+//	public List<LoaiSanPham> filterLSP(
+//			@RequestParam(value = "maram", required = false) Integer maram,
+//			@RequestParam(value = "marom", required = false) Integer marom){
+//		List<LoaiSanPham> lsp = loaiSanPhamService.listAll();
+//		
+//		
+//		return lsp;
+//	}
 	
 //	@PostMapping("/loaisanpham")
 //	public void saveLoaiSanPham(@RequestBody LoaiSanPham loaiSanPham){

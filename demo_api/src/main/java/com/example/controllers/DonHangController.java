@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +34,7 @@ import com.example.payload.DoanhThuThang;
 import com.example.payload.DonHangRequest;
 import com.example.payload.DonHangResponse;
 import com.example.payload.DonHangUpdateRequest;
+import com.example.payload.TrangThaiRequest;
 import com.example.service.CTDHService;
 import com.example.service.DonHangService;
 import com.example.service.KhachHangService;
@@ -91,8 +95,8 @@ public class DonHangController {
 			donHangRespose.setMadh(donhang.getMadh());
 			donHangRespose.setCmnd(khachHang.getCmnd());
 			donHangRespose.setDiachinhan(donhang.getDiachinhan());
-			donHangRespose.setManvduyet(donhang.getNhanVienDuyet().getManv().trim());
-			donHangRespose.setManvgiao(donhang.getNhanVienGiao().getManv().trim());
+			donHangRespose.setManvduyet(donhang.getNhanVienDuyet().getManv());
+			donHangRespose.setManvgiao(donhang.getNhanVienGiao().getManv());
 			donHangRespose.setMatrangthai(donhang.getTrangThai().getMatrangthai());
 			donHangRespose.setNgaylap(donhang.getNgayLap());
 			donHangRespose.setSdtnguoinhan(donhang.getSdtnguoinhan());
@@ -117,7 +121,22 @@ public class DonHangController {
 		
 	}
 	
+	@GetMapping("/donhang/kh")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public List<DonHang> getdonhangKH(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+		try {
+			List<DonHang> donhang = donhangService.getAllDonHangByMaKH(username);
+			return donhang;
+		} catch (NoSuchElementException e) {
+			// TODO: handle exception
+			return (List<DonHang>) new ResponseEntity<List<DonHang>>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@GetMapping("/donhang/kh/{username}")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public List<DonHang> getdonhangByMaKH(@PathVariable String username){
 		try {
 			List<DonHang> donhang = donhangService.getAllDonHangByMaKH(username);
@@ -128,6 +147,16 @@ public class DonHangController {
 		}
 	}
 
+	@GetMapping("/donhang/nv/{manv}")
+	public List<DonHang> getdonhangByMaNVG(@PathVariable String manv){
+		try {
+			List<DonHang> donhang = donhangService.getAllDonHangByNVG(manv);
+			return donhang;
+		} catch (NoSuchElementException e) {
+			// TODO: handle exception
+			return (List<DonHang>) new ResponseEntity<List<DonHang>>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	@GetMapping("/doanhthu/{ngaybd}/{ngaykt}")
 	public List<DoanhThuThang> getDoangThuByThang(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngaybd, 
@@ -154,13 +183,31 @@ public class DonHangController {
 	}
 	
 	@PutMapping("/donhang")
-	public ResponseEntity<ApiResponse> updateTrangThaiDH(@RequestBody Integer madh){
-		DonHang donHang = donhangService.getDonHangById(madh);
-		TrangThai trangThai = trangThaiSerVice.getTrangThaiById(3);
+	public ResponseEntity<ApiResponse> updateTrangThaiDH(@RequestBody TrangThaiRequest trangThaiRequest){
+		DonHang donHang = donhangService.getDonHangById(trangThaiRequest.getMadh());
+		TrangThai trangThai = trangThaiSerVice.getTrangThaiById(trangThaiRequest.getMatrangthai());
+		if(trangThaiRequest.getMatrangthai().equals(5)){
+			List<CTDH> ctdhs = ctdhService.getCTDHByIdDH(trangThaiRequest.getMadh());
+			for(CTDH ctdh : ctdhs){
+				LoaiSanPham loaiSanPham = loaiSanPhamService.getLoaiSanPhamById(ctdh.getId().getMaloaictdh());
+				Integer newslt = loaiSanPham.getSoluongton() + ctdh.getSoluong();
+				loaiSanPham.setSoluongton(newslt);
+				loaiSanPhamService.save(loaiSanPham);
+			}
+		}
 		donHang.setTrangThai(trangThai);
 		donhangService.save(donHang);
 		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
 	}
+	
+//	@PutMapping("/donhang")
+//	public ResponseEntity<ApiResponse> updateTrangThaiDH(@RequestBody Integer madh){
+//		DonHang donHang = donhangService.getDonHangById(madh);
+//		TrangThai trangThai = trangThaiSerVice.getTrangThaiById(3);
+//		donHang.setTrangThai(trangThai);
+//		donhangService.save(donHang);
+//		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
+//	}
 	
 	@PutMapping("/donhang/{id}")
 	public ResponseEntity<DonHangResponse> updatedonhang(@RequestBody DonHangUpdateRequest donHangUpdateRequest,
@@ -189,8 +236,8 @@ public class DonHangController {
 			donHangRespose.setTennguoinhan(donhang.getTennguoinhan());
 			donHangRespose.setTongtien(donhang.getTongtien());
 			
-			List<CTDH> ctghs = ctdhService.getCTDHByIdGH(id);
-			for(CTDH ctdh : ctghs){
+			List<CTDH> ctdhs = ctdhService.getCTDHByIdDH(id);
+			for(CTDH ctdh : ctdhs){
 				LoaiSanPham loaiSanPham = loaiSanPhamService.getLoaiSanPhamById(ctdh.getId().getMaloaictdh());
 				Integer newslt = loaiSanPham.getSoluongton() - ctdh.getSoluong();
 				loaiSanPham.setSoluongton(newslt);

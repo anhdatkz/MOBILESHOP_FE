@@ -23,6 +23,14 @@ public class DonHangService {
 		return (List<DonHang>)DonHangRepository.getAllDonHangByMaKH(cmnd);
 	}
 	
+	public List<DonHang> getAllDonHangByNVG(String manv){
+		return (List<DonHang>)DonHangRepository.getDonHangByMaNVG(manv);
+	}
+	
+	public List<DonHang> getAllDonHangByNVGPT(String manv){
+		return (List<DonHang>)DonHangRepository.getDonHangByMaNVGPT(manv);
+	}
+	
 	public List<DonHang> getDonHangByTrangThai(Integer matrangthai){
 		return (List<DonHang>)DonHangRepository.getDonHangByTrangThai(matrangthai);
 	}

@@ -42,7 +42,7 @@ public class HangController {
                     HttpStatus.OK);
 		}
 		this.hangService.save(hang);
-		return new ResponseEntity(new ApiResponse(true, "Tạo tài khoản thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, "Thêm hãng mới thành công!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/hang/{id}")

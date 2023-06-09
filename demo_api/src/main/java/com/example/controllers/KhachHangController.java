@@ -1,11 +1,16 @@
 package com.example.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +42,25 @@ public class KhachHangController {
 	private GioHangService GioHangService;
 	
 	@GetMapping("/khachhang")
-	public List<KhachHang> getAllHang(){
+	public List<KhachHang> getAllKhachHang(){
 		return this.khachHangService.listAll();
 	}
 	
+	@GetMapping("/khachhang/profile")
+	public ResponseEntity<KhachHang> getKhachHang(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        try {
+			KhachHang kh = khachHangService.getKhachHangByMaTK(username);
+			return new ResponseEntity<KhachHang>(kh, HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			// TODO: handle exception
+			return new ResponseEntity<KhachHang>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@PostMapping("/khachhang")
-	public ResponseEntity<ApiResponse> saveHang(@RequestBody KhachHang khachHang){
+	public ResponseEntity<ApiResponse> saveKhachHang(@RequestBody KhachHang khachHang){
 		if(taiKhoanService.exitsByMaTK(khachHang.getTaiKhoanKH().getMatk())){
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Username đã được sử dụng!"),
                     HttpStatus.OK);
@@ -51,10 +69,10 @@ public class KhachHangController {
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "CMND bị trùng!"),
                     HttpStatus.OK);
 		}
-//		this.khachHangService.save(khachHang);
+		//khachHangService.save(khachHang);
 		GioHang gioHang = new GioHang();
-		gioHang.setKhachHangGH(khachHang);;
-		this.GioHangService.save(gioHang);
+		gioHang.setKhachHangGH(khachHang);
+		GioHangService.save(gioHang);
 		return new ResponseEntity(new ApiResponse(true, "Tạo người dùng thành công!"), HttpStatus.OK);
 	}
 	
@@ -70,6 +88,7 @@ public class KhachHangController {
 	}
 	
 	@GetMapping("/khachhang/tk/{matk}")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<KhachHang> getKhachHangByMaTK(@PathVariable String matk){
 		try {
 			KhachHang kh = khachHangService.getKhachHangByMaTK(matk);
@@ -81,7 +100,7 @@ public class KhachHangController {
 	}
 	
 	@PutMapping("/khachhang/{id}")
-	public ResponseEntity<KhachHang> updateHang(@RequestBody KhachHang khachHang,
+	public ResponseEntity<KhachHang> updateKhachHang(@RequestBody KhachHang khachHang,
 			@PathVariable String id){
 		try {
 			KhachHang khachHangExist = khachHangService.getKhachHangById(id);

@@ -21,7 +21,7 @@ public class CTDHService {
 		ctdhRepository.save(ctdh);
 	}
 	
-	public List<CTDH> getCTDHByIdGH(Integer madh){
+	public List<CTDH> getCTDHByIdDH(Integer madh){
 		return (List<CTDH>) ctdhRepository.getCTDHByMaDH(madh);
 	}
 }

@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +64,22 @@ public class GioHangController {
 //		}
 //		
 //	}
+	
+	@GetMapping("/giohang/kh")
+	public GioHangResponse getGioHangKH(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+		try {
+			GioHang gioHang = gioHangService.getGioHangByMaKH(username);
+			GioHangResponse gioHangResponse = new GioHangResponse();
+			gioHangResponse.setIdgiohang(gioHang.getIdgiohang());
+			gioHangResponse.setCmnd(gioHang.getKhachHangGH().getCmnd().trim());
+			return gioHangResponse;
+		} catch (NoSuchElementException e) {
+			// TODO: handle exception
+			return null;
+		}
+	}
 	
 	@GetMapping("/giohang/kh/{matk}")
 	public GioHangResponse getGioHangByMaKH(@PathVariable String matk){

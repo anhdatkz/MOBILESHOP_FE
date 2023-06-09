@@ -7,6 +7,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +44,33 @@ public class CTGHController {
 	@GetMapping("/ctgh/{idgh}")
 	public List<CTGH> getCTGHByIdGH(@PathVariable Integer idgh) {
 		return this.ctghService.getCTGHByIdGH(idgh);
+	}
+	
+	@GetMapping("/ctgh/kh")
+	public List<CTGHResponse> getCTGHKH() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+		List<CTGH> ctghs = ctghService.getCTGHByMaTk(username);
+		List<CTGHResponse> ctghResponses = new ArrayList<CTGHResponse>();
+		for(CTGH ctgh : ctghs){
+			LoaiSanPham lsp = loaiSanPhamService.getLoaiSanPhamById(ctgh.getId().getMaloaictgh().trim());
+			List<CTGiamGia> ctGiamGias = lsp.getCtGiamGiaLSP();
+			CTGHResponse ctghResponse  = new CTGHResponse();
+			ctghResponse.setIdgiohang(ctgh.getId().getIdgiohangctgh());
+			ctghResponse.setMaloai(ctgh.getId().getMaloaictgh());
+			ctghResponse.setAnh(lsp.getAnh());
+			ctghResponse.setTenloai(lsp.getTenloai());
+			if (ctGiamGias.size() == 0) {
+				ctghResponse.setGia(lsp.getGia());
+			} else {
+				ctghResponse.setGia(lsp.getGia() - (lsp.getGia() * ctGiamGias.get(0).getPhantram() / 100));
+			}
+			ctghResponse.setSoluong(ctgh.getSoluong());
+			ctghResponse.setTong(ctgh.getTong());
+			ctghResponses.add(ctghResponse);
+		}
+		
+		return ctghResponses;
 	}
 	
 	@GetMapping("/ctgh/kh/{matk}")

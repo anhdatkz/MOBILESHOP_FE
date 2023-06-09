@@ -101,10 +101,12 @@ public class DanhGiaController {
 		KhachHang khachHang = khachHangService.getKhachHangById(danhGiaRequest.getCmnd().trim()); 
 		List<DonHang> donhang = donhangService.getAllDonHangByMaKH(khachHang.getTaiKhoanKH().getMatk().trim());
 		for(DonHang dh : donhang){
-			List<CTDH> ctdhs = ctdhService.getCTDHByIdGH(dh.getMadh());
-			for(CTDH ctdh : ctdhs){
-				if(ctdh.getLoaiSanPhamCTDH().getMaloai().trim().equals(danhGiaRequest.getMaloai().trim())){
-					check = true;
+			if (dh.getTrangThai().getMatrangthai() == 3) {
+				List<CTDH> ctdhs = ctdhService.getCTDHByIdDH(dh.getMadh());
+				for(CTDH ctdh : ctdhs){
+					if(ctdh.getLoaiSanPhamCTDH().getMaloai().trim().equals(danhGiaRequest.getMaloai().trim())){
+						check = true;
+					}
 				}
 			}
 		}
